@@ -61,6 +61,28 @@ counter()
 // reset: установить счетчик в 0;
 // set: установить счетчик в заданное значение;
 
+function makeNewCounter(count: number) {
+    // @ts-ignore
+    this.up = function () {
+        return ++count;
+    };
+    // @ts-ignore
+    this.down = function () {
+        return --count;
+    };
+    // @ts-ignore
+    this.resetNum = function () {
+        return 0
+    }
+    // @ts-ignore
+    this.setNum = function () {
+        return count
+    }
+}
+
+// @ts-ignore
+const newCounter = new makeNewCounter(0)
+
 // Task 04*
 // Реализовать функцию superSum которая принимает число в качестве аргумента, которое указывает на количество слагаемых
 // и что бы корректно работали следующие вызовы:
@@ -86,6 +108,7 @@ function superSum(n: number) {
             return inner
         }
     }
+
     return inner
 }
 
@@ -97,6 +120,16 @@ function superSum(n: number) {
 
 // Task 06
 // написать функцию, которая повторяет функционал метода flat массива на всю глубину.
+
+const arr = [1, 2, [3, 4, [5, 6]]];
+
+function flatDeep(arr: any, i = 1) {
+    return i > 0
+        ? arr.reduce((acc: any, val: any) => acc.concat(Array.isArray(val) ? flatDeep(val, i - 1) : val), [])
+        : arr.slice();
+};
+
+flatDeep(arr, Infinity)
 
 // just a plug
 export default () => {

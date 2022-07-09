@@ -7,18 +7,23 @@ console.log('lesson 4');
 // Task 01
 // Создайте промис, который постоянно находиться в состоянии pending.
 // В конструкторе промиса выведите в консоль сообщение "Promise is created".
+console.log(new Promise(() => console.log("Promise is created")))
 
 
 // Task 02
 // Создайте промис, который после создания сразу же переходит в состояние resolve
 // и возвращает строку 'Promise Data'
 // Получите данные промиса и выведите их в консоль
+console.log(new Promise((resolve) => resolve('Promise Data'))
+    .then(console.log))
 
 
 // Task 03
 // Создайте промис, который после создания сразу же переходит в состояние rejected
 // и возвращает строку 'Promise Error'
 // Получите данные промиса и выведите их в консоль
+console.log(new Promise((resolve, reject) => reject('Promise Error'))
+    .catch(console.log))
 
 
 // Task 04
@@ -26,6 +31,8 @@ console.log('lesson 4');
 // (Используйте setTimeout)
 // и возвращает строку 'Promise Data'
 // Получите данные промиса и выведите их в консоль
+console.log(new Promise((resolve) => setTimeout(resolve, 3000, 'Promise Data'))
+    .then(console.log))
 
 
 // Task 05
@@ -40,6 +47,14 @@ console.log('lesson 4');
 // описаного выше объекта: свойство promise получает новый созданный промис,
 // свойства resolve и reject получают ссылки на соответствующие функции
 // resolve и reject. Следующие два обработчика запускают методы resolve и reject.
+
+const handlePromise = {
+    promise: null,
+    resolve: null,
+    reject: null,
+    onSuccess: (paramName: string) => console.log(`Promise is resolved with data: ${paramName}`),
+    onError: (paramName: string) => console.log(`Promise is rejected with error: ${paramName}`)
+}
 
 
 // Task 06
@@ -57,6 +72,6 @@ console.log('lesson 4');
 // и выведите в консоль {name, age, city}
 
 
-
 // just a plug
-export default ()=>{};
+export default () => {
+};

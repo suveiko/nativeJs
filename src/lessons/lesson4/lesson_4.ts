@@ -7,23 +7,23 @@ console.log('lesson 4');
 // Task 01
 // Создайте промис, который постоянно находиться в состоянии pending.
 // В конструкторе промиса выведите в консоль сообщение "Promise is created".
-// console.log(new Promise(() => console.log("Promise is created")))
+console.log(new Promise(() => console.log("Promise is created")))
 
 
 // Task 02
 // Создайте промис, который после создания сразу же переходит в состояние resolve
 // и возвращает строку 'Promise Data'
 // Получите данные промиса и выведите их в консоль
-// console.log(new Promise((resolve) => resolve('Promise Data'))
-//     .then(console.log))
+console.log(new Promise((resolve) => resolve('Promise Data'))
+    .then(console.log))
 
 
 // Task 03
 // Создайте промис, который после создания сразу же переходит в состояние rejected
 // и возвращает строку 'Promise Error'
 // Получите данные промиса и выведите их в консоль
-// console.log(new Promise((resolve, reject) => reject('Promise Error'))
-//     .catch(console.log))
+console.log(new Promise((resolve, reject) => reject('Promise Error'))
+    .catch(console.log))
 
 
 // Task 04
@@ -31,8 +31,8 @@ console.log('lesson 4');
 // (Используйте setTimeout)
 // и возвращает строку 'Promise Data'
 // Получите данные промиса и выведите их в консоль
-// console.log(new Promise((resolve) => setTimeout(resolve, 3000, 'Promise Data'))
-//     .then(console.log))
+console.log(new Promise((resolve) => setTimeout(resolve, 3000, 'Promise Data'))
+    .then(console.log))
 
 
 // Task 05
@@ -92,13 +92,28 @@ export const rejectPromise = () => {
 // Создайте функцию print, которая выводит в консоль значение своего параметра
 // Добавьте два метода then и передайте созданные функции.
 
+const myNameIs: Promise<string> = new Promise(res => setTimeout(res, 1000, 'My name is'))
+
+const onSuccess = (description: string) => `${description} Sasha`
+const print = (param: string) => console.log(param)
+
+myNameIs.then(onSuccess).then(print)
 
 // Task 7
 // Создайте три промиса. Первый промис возвращает объект { name: "Anna" } через 2с,
 // второй промис возвращает объект {age: 16} через 3 с, а третий {city: ''} через 4с.
 // Получите результаты работы промисов, объедините свойства объектов
 // и выведите в консоль {name, age, city}
+const funcForPromiseAll = (time: number, value: {}) => new Promise(res => setTimeout(res, time, value))
 
+const res: Promise<Object[]> = Promise
+    .all([
+        funcForPromiseAll(2000, {name: "Anna"}) as Promise<Object[]>,
+        funcForPromiseAll(3000, {age: 16}) as Promise<Object[]>
+        , funcForPromiseAll(4000, {city: ''}) as Promise<Object[]>
+    ])
+
+res.then(([first, second, third]: Object[]) => ({...first, ...second, ...third})).then(console.log)
 
 // just a plug
 export default () => {

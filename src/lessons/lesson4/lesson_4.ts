@@ -104,6 +104,7 @@ myNameIs.then(onSuccess).then(print)
 // второй промис возвращает объект {age: 16} через 3 с, а третий {city: ''} через 4с.
 // Получите результаты работы промисов, объедините свойства объектов
 // и выведите в консоль {name, age, city}
+
 const funcForPromiseAll = (time: number, value: {}) => new Promise(res => setTimeout(res, time, value))
 
 const res: Promise<Object[]> = Promise

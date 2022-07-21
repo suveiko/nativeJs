@@ -12,6 +12,71 @@ console.log('Lesson 6');
 // Создать массив из десяти элементов такого типа, упорядочить записи по возрастанию среднего балла.
 // Добавить возможность вывода фамилий и номеров групп студентов, имеющих оценки, равные только 4 или 5.
 
+interface IStudent {
+    name: string
+    surName: string
+    groupHumber: number
+    score: number[]
+    averageScore: number
+}
+
+class Student implements IStudent {
+    name: string;
+    surName: string;
+    groupHumber: number;
+    score: number[];
+    averageScore: number;
+
+    constructor(name: string, surName: string, groupHumber: number, score: number[]) {
+        this.name = name
+        this.surName = surName
+        this.groupHumber = groupHumber
+        this.score = score
+        this.averageScore = this.score.reduce((sum, mark) => sum + mark) / this.score.length
+    }
+
+    static sort(arr: Student[]) {
+        return [...arr].sort(this.sortStudents)
+    }
+
+    private static sortStudents(s1: IStudent, s2: IStudent) {
+        if (s1.averageScore > s2.averageScore) {
+            return 1
+        } else if (s1.averageScore < s2.averageScore) {
+            return -1
+        } else {
+            return 0
+        }
+    }
+
+    private static isAllScoresEqualFour(score: number[]) {
+        return score.every(sc => sc === 4)
+    }
+
+    private static isAllScoresEqualFive(score: number[]) {
+        return score.every(sc => sc === 5)
+    }
+
+    static filterStudent(arr: Student[]) {
+        const result: IStudent[] = []
+
+        arr.forEach(item => {
+            if (this.isAllScoresEqualFive(item.score) || this.isAllScoresEqualFour(item.score)) {
+                result.push(item)
+            }
+        })
+
+        return result
+    }
+
+    static printGoodStudents(arr: Student[]) {
+        this.filterStudent(arr).forEach(st => {
+            console.log(`Student - ${st.surName}, Group - ${st.groupHumber}`)
+        })
+    }
+}
+
+
 // Task 02
 // Создать класс с двумя переменными. Добавить конструктор с входными параметрами и инициализирующий члены класса по умолчанию.
 // Можно ли создать метод на экземпляре класса который будет удалять сам экземпляр класса?

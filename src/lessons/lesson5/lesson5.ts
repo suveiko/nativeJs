@@ -28,21 +28,19 @@ console.log('Lesson 5');
 type someObjType = {
     name: string;
     age: number;
-    greeting: () => void
+    greeting?: () => void
 }
 const someObj: someObjType = {
     name: 'Eugene',
-    age: 32,
-    greeting() {
-    }
+    age: 32
 }
 
-function greeting(this: any) {
+function greeting(this: someObjType) {
     return `My name is ${this.name}. I am ${this.age}`
 }
 
 someObj.greeting = greeting
-console.log(someObj.greeting())
+someObj.greeting()
 
 // Task 02
 // реализовать счетчик counter в виде объекта со следующими методами:
@@ -77,24 +75,39 @@ const counter = {
     }
 }
 
-console.log(counter.setCurrentCount(10))
+counter.setCurrentCount(10)
 
 // Task 03
 // переделайте код из Task 02, что бы сработал следующий код:
-console.log(counter.setCurrentCount(10).increment().increment().increment().decrement().getCurrentCount()) // 12
+counter.setCurrentCount(10).increment().increment().increment().decrement().getCurrentCount() // 12
 
 // Task 04
 // Написать функцию конструктор myFirstConstructorFunc которая принимает 2 параметра name и age и возвращает объект
 // у которого будут эти свойства и метод greeting из Task 01
 
+function myFirstConstructorFunc(name: string, age: number) {
+    // @ts-ignore
+    this.name = name
+    // @ts-ignore
+    this.age = age
+    // @ts-ignore
+    this.greeting = greeting
+}
+
+// @ts-ignore
+const obj = new myFirstConstructorFunc('Sasha', 22)
+
 // Task 05 есть 2 объекта One и Two. С помощью bind и метода sayHello заставьте поздороваться объект One
 
-let One = {name: 'One'};
-let Two = {
-    name: 'Two', sayHello: function () {
+const One = {name: 'One'};
+const Two = {
+    name: 'Two',
+    sayHello: function () {
         console.log(`Hello, my name is ${this.name}`)
     }
 };
+
+Two.sayHello.bind(One)()
 
 // Task 06
 // создайте объект helperObj у которого есть следующие методы:
@@ -103,17 +116,56 @@ let Two = {
 // greeting - используется функция sayHello из Task 05
 // можно использовать @ts-ignore
 
+const helperObj = {
+    changeName(name: string) {
+        //@ts-ignore
+        this.name = name
+    },
+    setAge(age: number) {
+        //@ts-ignore
+        this.age = age
+    },
+    greeting: Two.sayHello
+}
+
+
 // Bind
 // 1) Дана функция sumTwoNumbers, реализовать функцию bindNumber которая принимает функцию sumTwoNumbers и число, и
 // возвращает другую функцию, которое также принимает число и возвращает сумму этих чисел. Замыкание использовать нельзя
 function sumTwoNumbers(a: number, b: number): number {
     return a + b
-};
+}
+
+function bindNumber(sumTwoNumbers: number, number: number) {
+    return function (num: number) {
+        console.log(sumTwoNumbers + num + number)
+    }
+}
+
+bindNumber(sumTwoNumbers(2, 3), 10)(2)
 
 // 2) Напишите функцию которая принимает первым аргументом объект One, а вторым helperObj. Данная функция
 // возвращает другую функцию которая принимает строку в качестве аргумента и устанавливает ее свойству name объекта One
+
+function fn(one: typeof One, help: typeof helperObj) {
+    return function (name: string) {
+        help.changeName.call(one, name)
+    }
+}
+
+fn(One, helperObj)('John')
+
 // 3) Одной строкой установить с помощью helperObj объекту Two поле age в значение 30
+
+helperObj.setAge.call(One, 30)
+
 // 4) Создать метод hi у объекта One, который всегда вызывает метод greeting объекта helperObj от имени Two
+
+//@ts-ignore
+One.hi = helperObj.greeting.bind(Two)
+
+//@ts-ignore
+One.hi()
 
 // Реализовать задачи 2-4 из Bind с помощью Call
 
